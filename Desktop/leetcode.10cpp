@@ -1,0 +1,26 @@
+class Solution {                 
+public:
+    int calPoints(vector<string>& operations) { 
+        int len = 0;                  
+        vector<int> st;             
+
+        for (auto& op : operations) { // 范围for：逐个取出每条操作字符串op
+            switch (op[0]) {          // 取字符串第一个字符，判断操作类型
+                case '+':           
+                    // 倒数第二个 + 最后一个，压入栈
+                    st.push_back(st[st.size() - 2] + st.back());
+                    break;
+                case 'D':            
+                    st.push_back(st.back() * 2); // 上一轮分数×2，入栈
+                    break;
+                case 'C':           
+                    st.pop_back();    // 取消上一轮：弹出栈顶
+                    break;
+                default:              // 否则：是数字字符串
+                    st.push_back(stoi(op)); // stoi：字符串转整数，入栈
+            }
+        }
+        // reduce：从开头到结尾，把数组所有数累加求和
+        return reduce(st.begin(), st.end());
+    }
+};
